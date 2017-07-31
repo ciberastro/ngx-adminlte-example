@@ -1,14 +1,15 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {
   AdmStatusService,
-  User,
   AdmSideBarTreeItem,
   AdmSideBarTreeItemLabel,
   AdmCtrlBarProgressItem,
   AdmCtrlBarHeaderItem,
   AdmCtrlBarInfoBoxItem,
   AdmCtrlBarCheckBoxItem,
-  AdmCtrlBarTab
+  AdmCtrlBarTab,
+  AdmHeaderModel,
+  AdmHeaderLogoModel, AdmFooterModel, AdmHeaderUserModel, AdmSideBarUserModel
 } from 'ngx-adminlte';
 
 @Component({
@@ -21,25 +22,29 @@ import {
 })
 export class AppComponent implements OnInit {
 
-  private loginUser:User;
+  private sideBarUserModel:AdmSideBarUserModel;
   private treeViewItems:AdmSideBarTreeItem[];
-
+  private headerModel:AdmHeaderModel;
   private ctrlBarTabs:AdmCtrlBarTab[];
+  private footerModel:AdmFooterModel;
+  private headerUserModel:AdmHeaderUserModel;
 
   constructor(private statusService:AdmStatusService) {
   }
 
   ngOnInit():void {
 
-    this.loginUser = new User();
-    this.loginUser.name = 'zmlcoder';
-    this.loginUser.imgUrl = '../assets/img/angular-logo.png';
-    this.loginUser.status = 'Online';
-    this.loginUser.statusIcon = 'fa fa-circle text-success';
+    this.sideBarUserModel = this.createSideBarUserModel();
+
+    this.headerModel = this.createHeaderModel();
+    this.headerUserModel = this.createHeaderUserModel();
 
     this.treeViewItems = this.createSideBarItems();
 
     this.ctrlBarTabs = this.createCtrlBarTabs();
+
+    this.footerModel = this.createFooterModel();
+
   }
 
   /**
@@ -335,5 +340,74 @@ export class AppComponent implements OnInit {
     settingsTab.items.push(notificationItem);
 
     return settingsTab;
+  }
+
+  /**
+   *  Create header model.
+   */
+  private createHeaderModel():AdmHeaderModel {
+
+    let headerModel = new AdmHeaderModel();
+
+    // logo
+    let logoModel = new AdmHeaderLogoModel();
+    logoModel.href = '#';
+    logoModel.logo = '<b>Admin</b>LTE';
+    logoModel.miniLogo = '<b>A</b>LT';
+    headerModel.logoModel = logoModel;
+
+    return headerModel;
+  }
+
+  /**
+   *  Create footer model.
+   */
+  private createFooterModel():AdmFooterModel {
+
+    let footerModer = new AdmFooterModel();
+
+    footerModer.leftText = '<strong>Copyright &copy; 2016-2017 <a href = "https://github.com/zmlcoder">zmlcoder</a></strong> All rights reserved.';
+    footerModer.rightText = `<b> Version </b> 2.3.11`;
+
+    return footerModer;
+  }
+
+  /**
+   *  Create user model for header bar.
+   */
+  private createHeaderUserModel():AdmHeaderUserModel {
+    let headerUserModel = new AdmHeaderUserModel();
+
+    headerUserModel.name = 'zmlcoder';
+    headerUserModel.imgUrl = '../assets/img/angular-logo.png';
+    headerUserModel.description = 'ZMLCODER - Web Developer <small>Member since Nov. 2012</small>';
+    headerUserModel.leftButton = {
+      text: 'Profile',
+      clickFn: ()=> {
+        console.info('Profile');
+      }
+    };
+    headerUserModel.rightButton = {
+      text: 'Sign Out',
+      clickFn: ()=> {
+        console.info('Sign Out');
+      }
+    };
+
+    return headerUserModel;
+  }
+
+  /**
+   *  Create user model for side bar.
+   */
+  private createSideBarUserModel():AdmSideBarUserModel {
+    let sideBarUserModel = new AdmSideBarUserModel();
+
+    sideBarUserModel.name = 'zmlcoder';
+    sideBarUserModel.imgUrl = '../assets/img/angular-logo.png';
+    sideBarUserModel.status = 'Online';
+    sideBarUserModel.statusIcon = 'fa fa-circle text-success';
+
+    return sideBarUserModel;
   }
 }
